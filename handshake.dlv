@@ -1,0 +1,7 @@
+% shortcut for saying person(1). person(2). ... person(10).
+% it is assumed that the people sit around the table in numerical order
+person(1..10).
+
+% if X is a person and Y is a person, then X shakes hands with Y.
+
+shakes(X, Y) :- person(X), person(Y), X<Y, XP=X+1, XM=X-1, Y!=XP, Y!=XM, TC= Y-X, 9>TC.

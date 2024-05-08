@@ -1,0 +1,23 @@
+square(0..63).
+row(S, R) :- square(S), R=S/8. 
+col(S, C) :- square(S), #mod(S, 8, C).
+
+% Now you can write an edge predicate, edge(A, B) using rules like 
+% "there is an edge from square A to square B if the rows for A and B are two apart, 
+% and the columns for A and B are 1 apart." After you have figured out the edges, you will not 
+% need row() and column() anywhere else in your code.
+move(A, B) :- row(A, AR), row(B, BR), col(A, AC), col(B, BC), #absdiff(AR, BR, 2), #absdiff(AC, BC, 1).
+move(A, B) :- row(A, AR), row(B, BR), col(A, AC), col(B, BC), #absdiff(AR, BR, 1), #absdiff(AC, BC, 2). % works 
+
+% Use a predicate named path(A, B) to indicate that an edge is part of the solution. By using 
+% path(A, B), it will allow you to paste your path predicates into my program so that you can
+% check if your solutions really form a knight's tour.
+
+path(A, B) v notpath(A, B) :- move(A,B).
+
+:- path(A,B), path(A,C), B!=C.
+:- path(B,A), path(C,A), B!=C.
+
+reachable(A) :- path(1, A).
+reachable(A) :- reachable(B), path(B, A).
+:- not reachable(A), square(A). % this is the culprit

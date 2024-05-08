@@ -1,0 +1,69 @@
+% idea: 
+% make this work for steps and halves
+% go to c / javascript
+% build a family tree graphic
+
+% parents
+mother(louise, donald).
+father(walter, donald).
+mother(florence, norm).
+father(donald, norm).
+mother(florence, diane).
+father(donald, diane).
+mother(ethel, bonnie).
+father(george, bonnie).
+mother(bonnie, nirm).
+father(norm, nirm).
+mother(bonnie, mike).
+father(norm, mike).
+mother(bonnie, laura).
+father(norm, laura).
+mother(diane, jeff).
+mother(diane, jane).
+father(nirm, john).
+father(mike, dell).
+father(mike, nathan).
+father(mike, rebecca).
+mother(laura, jack).
+mother(laura, harvey).
+mother(laura, violet).
+
+
+% determine parents
+parent(A, B) :- father(A, B).
+parent(A, B) :- mother(A, B).
+
+% determine child relationship
+child(B, A) :- parent(A, B).
+
+% sibling
+sibling(B, C) :- parent(A, B), parent(A, C), B!=C.
+
+% grandparent
+grandparent(A, C) :- parent(A, B), parent(B, C).
+
+% grandchild
+grandchild(B, A) :- grandparent(A, B).
+
+% greatgrandparent
+greatgrandparent(A, B) :- parent(C, B), grandparent(A, C).
+
+% greatgrandchild
+greatgrandchild(B, A) :- greatgrandparent(A, B).
+
+% cousin- only first??
+cousin(A, B) :- parent(C, A), pibling(C, B).
+
+% pibling (we'll use this gender-neutral predicate if someone is an aunt or an uncle. A "pibling" is a parent's sibling.)
+pibling(A, B) :- parent(C, B), sibling(C, A).
+
+% nibling (a gender-neutral predicate if someone is a niece or a nephew.)
+nibling(B,A) :- pibling(A, B).
+
+% ancestor
+ancestor(A, B) :- parent(A, B).
+ancestor(A, B) :- ancestor(A, C), parent(C, B).
+
+
+% descendant (you could do this either recursively, as we did with ancestor, or you could say that if louise is an ancestor of norm, then norm is a descendant of louise)
+descendant(B, A) :- ancestor(A,B).

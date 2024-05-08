@@ -1,0 +1,23 @@
+% a v b.
+% a :- b.
+% b :- a.
+% empty set
+
+% a.
+% -b :- a.
+% b :- a.
+% no answer set
+
+%-b.
+%b :- -b.
+
+% dlv, ASP, and clingo are declarative
+% declarative= The programmer declares what the programmer wants, and the computer gives back what the programmer asked for.
+
+%  imperative outperform declarative most of the time
+
+% head :- body. 
+% default negation = don't know then false
+
+% phi.
+p :- not phi, not p.

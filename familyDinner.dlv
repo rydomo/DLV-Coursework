@@ -1,0 +1,60 @@
+% person_meat_potato_vegetable(PE, M, PO, V)
+
+per(father). per(mother). per(sister). per(brother).
+
+meat(steak). meat(ham). meat(pork). meat(lamb). 
+
+pot(baked). pot(mashed). pot(fried). pot(boiled).
+
+veg(peas). veg(carrot). veg(corn). veg(spinach).
+
+perMeat(father, M) v perMeat(mother, M) v perMeat(sister, M) v perMeat(brother, M) :- meat(M).
+:- perMeat(P, M1), perMeat(P, M2), M1!=M2.
+
+perPot(father, T) v perPot(mother, T) v perPot(sister, T) v perPot(brother, T) :- pot(T).
+:- perPot(P, T1), perPot(P, T2), T1!=T2.
+
+perVeg(father, V) v perVeg(mother, V) v perVeg(sister, V) v perVeg(brother, V) :- veg(V).
+:- perVeg(P, V1), perVeg(P, V2), V1!=V2.
+
+person_meat_potato_vegetable(PE, M, PO, V) :- perMeat(PE, M), perPot(PE, PO), perVeg(PE, V).
+
+%60
+% hint 1
+perPot(sister, fried) v perMeat(sister, lamb).
+perMeat(brother, lamb) :- perPot(sister, fried).
+perPot(brother, fried) :- perMeat(sister, lamb).
+
+% hint 2
+perVeg(mother, spinach) v perMeat(mother, pork).
+perMeat(daughter, pork) :- perVeg(mother, spinach).
+perVeg(daughter, spinach) :- perMeat(mother, pork).
+:- person_meat_potato_vegetable(_, pork, _, spinach).
+-perMeat(brother, pork).
+-perVeg(brother, spinach).
+
+
+% hint 3
+perVeg(father, peas).
+-perMeat(father, pork).
+-perVeg(father, carrot).
+-perPot(father, baked).
+:- person_meat_potato_vegetable(_, pork, baked, _).
+:- person_meat_potato_vegetable(_, pork, _, corn).
+:- person_meat_potato_vegetable(_, _, baked, corn).
+:- person_meat_potato_vegetable(_, pork, _, peas).
+:- person_meat_potato_vegetable(_, _, baked, peas).
+
+
+% hint 4
+perPot(mother, boiled) v perMeat(mother, steak).
+perMeat(father, steak) :- perPot(mother, boiled).
+perPot(father, boiled) :- perMeat(mother, steak).
+:- person_meat_potato_vegetable(_, steak, boiled, _).
+
+
+% hint 5
+perPot(brother, fried) v perMeat(brother, steak).
+perMeat(father, steak) :- perPot(brother, fried).
+perPot(father, fried) :- perMeat(brother, steak).
+:- person_meat_potato_vegetable(_, steak, fried, _).

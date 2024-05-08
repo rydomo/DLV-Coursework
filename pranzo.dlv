@@ -1,0 +1,9 @@
+primo(pastaalfungi).
+primo(zuppadorzo).
+primo(zuppapovera).
+secondo(prosciutto).
+secondo(pizzamargherita).
+contorno(insalata).
+contorno(patate).
+
+pranzo(P,S,C) :- primo(P), secondo(S), contorno(C).

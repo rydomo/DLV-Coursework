@@ -1,0 +1,6 @@
+num(1..5).
+
+place(P, 1) v place(P, 2) v place(P, 3) v place(P, 4) v place(P, 5) :- num(P).
+
+% appears(N) :- place(_, N).
+% :- num(N), not appears(N).

@@ -1,0 +1,79 @@
+% four owners, four cities, four flavors, four days
+owner(sally). owner(gary). owner(tom). owner(alice).
+
+city(rockland). city(granite). city(marsh). city(boulder).
+
+flavor(peppermint). flavor(chocolate). flavor(peanut). flavor(coffee).
+
+day(tuesday). day(wednesday). day(thursday). day(friday).
+
+% disjunctive rules to say that each city is paired with exactly one owner...
+
+owner_city(sally, C) v owner_city(gary, C)
+v owner_city(tom, C) v owner_city(alice, C)
+:- city(C).
+
+:- owner_city(O, C1), owner_city(O, C2), C1!=C2.
+
+% each flavor is paired with exactly one owner...
+owner_flavor(sally, F) v owner_flavor(gary, F)
+v owner_flavor(tom, F) v owner_flavor(alice, F)
+:- flavor(F).
+
+:- owner_flavor(O, F1), owner_flavor(O, F2), F1!=F2.
+
+% each day is paired with exactly one owner...
+%owner_day(O, D)
+owner_day(sally, D) v owner_day(gary, D)
+v owner_day(tom, D) v owner_day(alice, D)
+:- day(D).
+
+:- owner_day(O, D1), owner_day(O, D2), D1!=D2.
+
+% create a predicate that puts together the owner, city, flavor, and day
+solution(O, C, F, D):- owner_city(O, C), owner_flavor(O, F), owner_day(O, D).
+
+%%%%%%%%%%%%%%%%%% 
+% Next, take each clue, figure out what you can from
+% it, and write these as DLV statements.
+
+% hint 1
+-owner_city(sally, rockland).
+:- solution(_, _, peppermint, thursday).
+
+% hint 2
+-owner_city(gary, granite).
+-owner_flavor(gary, chocolate).
+-owner_day(gary, thursday).
+-owner_day(gary, friday).
+:- solution(_, granite, chocolate, _).
+:- solution(_, granite, _, tuesday).
+:- solution(_, granite, _, friday).
+:- solution(_, _, chocolate, tuesday).
+:- solution(_, _, chocolate, wednesday).
+% owner_day(gary, tuesday):- solution(_, granite, _, wednesday).
+% owner_day(gary, wednesday):- solution(_, granite, _, thursday).
+
+% hint 3
+owner_flavor(tom, peanut).
+-owner_day(tom, tuesday).
+
+% hint 4
+-owner_day(alice, wednesday).
+-owner_flavor(alice, coffee).
+% coffee and wednesday are in the solution together
+:- solution(_, _,chocolate, wednesday). 
+:- solution(_, _,peppermint, wednesday). 
+:- solution(_, _,peanut, wednesday). 
+
+% hint 5
+-owner_city(sally, marsh).
+-owner_day(sally, tuesday).
+:- solution(_, marsh, _, friday).
+owner_day(sally, wednesday):- solution(_, marsh, _, tuesday).
+owner_day(sally, thursday):- solution(_, marsh, _, wednesday).
+owner_day(sally, friday):- solution(_, marsh, _, thursday).
+
+% 6 alice in bolder but not friday
+owner_city(alice, boulder).
+-owner_day(alice, friday).

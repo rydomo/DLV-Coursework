@@ -1,0 +1,27 @@
+#maxint=27.
+
+row(1..3).
+col(1..3).
+val(1..9).
+
+% this gives 2^81 solutions
+% place(R,C,V) :- row(R), col(C), val(V).
+% sol(R,C,V) v -sol(R,C,V) :- place(R,C,V).
+
+% 9^9 solutions
+place(R,C,1) v place(R,C,2) 
+v place(R,C,3) v place(R,C,4) 
+v place(R,C,5) v place(R,C,6) 
+v place(R,C,7) v place(R,C,8) 
+v place(R,C,9) :- row(R), col(C).
+
+:- #int(S), col(C), S=#sum{X, R: place(R, C, X)}, S!=15.
+:- #int(S), row(R), S=#sum{X, C: place(R, C, X)}, S!=15.
+% diagonal
+% :- #int(S), S=#sum{X, V: place(V, V, X)}, S!=15.
+% diagonal (add to four)
+% :- #int(S), S=#sum{X, C: R =4-C, place(R, C, X)}, S!=15.
+
+
+% appears(N) :- place(_, _, N).
+% :- val(N), not appears(N).

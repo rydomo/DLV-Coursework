@@ -1,0 +1,14 @@
+#maxint = 66.
+
+num(1..11).
+
+set(A) v -set(A) :- num(A).
+
+total(S) :- #int(S), S= #sum{X: set(X)}.
+
+:- total(S), S != 40.
+
+in(S) :- #int(S), S= #sum{X: set(X)}.
+out(S) :- #int(S), S= #sum{X: -set(X)}.
+
+:-in(I), out(O), O != I.

@@ -1,0 +1,29 @@
+lucky(7). lucky(11). lucky(13).
+
+unlucky(N) :- #int(N), not lucky(N), N>0.
+
+even(2).
+even(N) :- #int(N), even(M), N=M+2.
+
+odd(N) :- #int(N), not even(N), N>0.
+
+multiple5(N) :- #int(N), N>0, #mod(N, 5, 0).
+
+square(N) :- #int(N), N>0, #int(M), M>0, *(M, M, N).
+
+ends7(N):- #int(N), N>0, #mod(N, 10, 7).
+
+has3(N) :- #int(N), N>0, N>29, N<40.
+has3(N) :- #int(N), N>0, #mod(N, 10, 3).
+
+sum20(M, N) :- #int(N), N>0, #int(M), M>0, O=M+N, O=20, M<=N.
+
+product60(M, N) :- #int(N), N>0, #int(M), M>0, *(N, M, 60).
+
+factor60(N) :- #int(N), N>0, #mod(60, N, 0).
+
+composite(N) :- #int(N), #int(M), M>1, N>M,  #mod(N, M, 0).
+
+prime(N) :- #int(N), N>1, not composite(N).
+
+primeplus1(N) :- #int(N), M= N-1, prime(M).

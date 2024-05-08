@@ -1,0 +1,40 @@
+#maxint=10.
+row(1..10).
+col(1..10).
+val(0).
+val(1).
+
+place(R,C,1) v place(R,C,0) :- row(R), col(C).
+
+place(1,2,1).
+place(1,4,1).
+place(1,6,0).
+place(1,9,1). 
+place(2,1,0). 
+place(2,3,0). 
+place(3,7,1). 
+place(3,8,1). 
+place(4,3,1). 
+place(4,6,0). 
+place(5,1,0). 
+place(6,8,0). 
+place(6,9,0). 
+place(7,1,1). 
+place(7,8,1). 
+place(7,10,1).
+place(8,3,0).
+place(8,7,0).
+place(9,7,0).
+place(9,9,1).
+place(10,5,0).
+place(10,8,0).
+
+:- col(C), not #sum{X, R: place(R, C, X)} = 5.
+:- row(R), not #sum{X, C: place(R, C, X)} = 5.
+
+:- col(C), row(R), #int(R2), R2=R-1, row(R2), #int(R3), R3=R+1, row(R3), place(R, C, V), place(R2, C, V), place(R3, C, V).
+:- row(R), col(C), #int(C2), C2=C-1, col(C2), #int(C3), C3=C+1, col(C3), place(R, C, V), place(R, C2, V), place(R, C3, V).
+
+% 5 soln
+:- col(C), col(C2), C!=C2, #sum{X, R: place(R, C, X), place(R, C2, X)} = 5.
+:- row(R), row(R2), R!=R2, #sum{X, C: place(R, C, X), place(R2, C, X)} = 5.

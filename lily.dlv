@@ -1,0 +1,85 @@
+% Rylee Domonkos CSE 270C
+% This is an example of looking for a Hamiltonian
+% path, which is a path through a graph that
+% goes to each vertex exactly once.
+% There are really two main parts to this.
+% The first part is just setting up the particular graph.
+% In this case, that's just specifying the lily pads,
+% and which ones are connected through jumps.
+% The second part is specifying all the rules for the
+% path. These rules will be roughly the same for any
+% Hamiltonian path problem.
+
+%%%%%%%%%%%%%%%%%% Section 1: Set up the graph.
+
+% 1. set up the lily pads
+lily(1..7).
+
+% 2. if two lily pads are 3 away from each other (in
+% either direction), connect them with an edge.
+% Write this as a one-line rule. 
+% #absdiff() is useful. 
+% Run your code and you should see some (not all) edges.
+edge(A, B) :- lily(A), lily(B), #absdiff(A, B, 3).
+
+% 3. if two lily pads are 5 away from each other (in
+% either direction), connect them with an edge.
+% Run your code and you should see all possible edges.
+edge(A, B) :- lily(A), lily(B), #absdiff(A, B, 5).
+
+%%%%% We are done setting up the graph with all
+%%%%% its nodes and edges.
+%%%%% Now we want to find which edges form a solution.
+
+%%%%%%%%%%%%%%%%%% Section 2: Add the rules.
+% These rules will be roughly the same for any 
+% Hamiltonian path problem like this.
+
+% 4. each edge is either in the path or not in the path
+% You could use path(A,B) and notpath(A,B)
+% or jump(A,B) and notjump(A,B), or something like that.
+% Run this now and you should get a lot of "solutions"
+% (more than 1,000). Run with -filter=path or -filter=jump
+% or whatever you named your predicate.
+path(A, B) v notpath(A, B) :- edge(A,B).
+
+
+% 5. can't have two jumps FROM the same lily pad.
+% Write this as a constraint.
+% Run and you should find fewer "solutions".
+:- path(A,B), path(A,C), B!=C.
+
+% 6. can't have two jumps TO the same lily pad.
+% Run and you should find fewer "solutions".
+:- path(B,A), path(C,A), B!=C.
+
+%%%%% At this point, we have a lot of "solutions"
+% that are not truly solutions. Even though each solution
+% follows the above rules, many solutions do not travel
+% to all the lily pads. We only want solutions that
+% reach all lily pads.
+
+% 6. the starting lily pad is reachable. You can decide
+% which lily pad the frog starts from, and say that
+% it's reachable. For example, you could say:
+% reachable(1).
+reachable(5).
+
+% 7. any lily pad is reachable if it is one jump after
+% a lily pad that is reachable
+reachable(A) :- reachable(B), path(B, A).
+
+%%%%% All we did was define reachable. We did not
+% change any constraints. Now we just have one final
+% constraint to write.
+
+
+% 8. don't accept a solution if there are unreachable
+% lily pads.
+:- not reachable(A), lily(A).
+
+% 9. Now run your code. But remember, there are some 
+% starting lily pads that won't let the frog visit
+% all lily pads. So, if you don't get a solution,
+% modify your code by specifying a different starting
+% lily pad.

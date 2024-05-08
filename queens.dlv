@@ -1,0 +1,15 @@
+row(1..8).
+col(1..8).
+
+place(R,1) v place(R,2)
+v place(R,3) v place(R,4)
+v place(R,5) v place(R,6)
+v place(R,7) v place(R,8)
+:- row(R).
+
+:- place(A, C), place(B, C), col(C), A!=B.
+
+% check diagonals
+% recursive call
+:- place(R1, C1), place(R2, C2), R1!=R2,
+#absdiff(R1, R2, D1), #absdiff(C1, C2, D2), D1=D2.

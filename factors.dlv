@@ -1,0 +1,94 @@
+% Rylee Domonkos CSE 270
+% adjust the second number depending on what
+% range of numbers you want to work with.
+% But always start the range at 1.
+num(1..100).
+#maxint=100.
+
+% F is a factor of N if F divides evenly into N,
+% leaving a remainder of 0.
+factor(F, N) :- num(F), num(N), #mod(N, F, 0).
+
+% factor_count(N, C) 
+% uses #count to count how many factors a number has. 
+% For example, factor_count(10, 4) because
+% the factor count of 10 is 4 (10's 4 factors are 1, 2, 5, 10)
+factor_count(N, C) :- num(N), C=#count{F: factor(F,N)}.
+
+% prime(N)
+% uses factor_count to determine if N is prime.
+% Prime numbers have exactly 2 factors.
+prime(N) :- factor_count(N, C), C=2.
+
+prime_count(N) :- N=#count{C: prime(C)}.
+
+% twin_primes(P1, P2)
+% two numbers are called twin primes if they are both prime
+% and they are only two apart. For example, 17 and 19 are twin
+% primes. Don't list twin primes in both directions. List them
+% so that P1 is less than P2. So, twin_primes(17, 19) but not
+% twin_primes(19, 17).
+twin_primes(P1, P2) :- prime(P1), prime(P2), M=P2-P1, M=2.
+
+% triplet_primes(P1, P2, P3) 3,5,7
+% three numbers are called triplet primes if they are all prime
+% and P2 is 2 more than P1, and P3 is 2 more than P2.
+triplet_primes(P1, P2, P3) :- prime(P1), prime(P2), prime(P3), M=P2-P1, M=2, N=P3-P2, N=2.
+
+% most_factors(M)
+% uses #max to determine the largest factor count of any number.
+% This doesn't tell you WHICH number has the largest count. It
+% just tells you what that largest count is. For example,
+% if you only look at the numbers from 1 to 10, you should find
+% most_factors(4) because of all the numbers from 1 to 10, the
+% largest amount of factors any of those numbers has is 4.
+most_factors(M) :- M = #max{C: factor_count(N,C)}.
+
+% has_most_factors(N)
+% gives back WHICH numbers have the most factors. For example,
+% if you only look at the numbers from 1 to 10, you should find
+% most_factors(4), and...
+% has_most_factors(6)
+% has_most_factors(8)
+% has_most_factors(10)
+% because 6, 8, and 10 all have 4 factors.
+has_most_factors(N) :- most_factors(C), factor_count(N,C).
+
+% factor_sum(N, S)
+% gives the sum of the factors of N. For example, you should
+% find factor_sum(8, 15) because the factors of 8 are 1, 2, 4, 8.
+factor_sum(N, S) :- num(N), S= #sum{F: factor(F,N)}.
+
+% proper_factor_sum(N, S)
+% gives the sum of the PROPER factors of N. A number's proper
+% factors are all its factors except for N.
+% For example, you should
+% find proper_factor_sum(8, 7) because the proper factors of 8 are 1, 2, 4.
+proper_factor_sum(N, S) :- num(N), S= #sum{F: factor(F,N), F<N}.
+
+
+% abundant(N)
+% deficient(N)
+% perfect(N)
+% Sometimes when you compute the sum of a number's proper factors,
+% that sum will be GREATER than the number. Such numbers are abundant.
+% Sometimes the sum is LESS than the number. Such numbers are deficient.
+% And occasionally, the sum is EQUAL to the number. Such numbers are perfect.
+% For example:
+% 12 is abundant. The sum of its proper factors is 1+2+3+4+6=16 which is > 12.
+% 15 is deficient. The sum of its proper fators is 1+3+5=9 which is < 15.
+% 6 is perfect. The sum of its proper factors is 1+2+3=6 which is = 6.
+abundant(N) :- proper_factor_sum(N, S), S>N.
+deficient(N) :- proper_factor_sum(N, S), S<N.
+perfect(N) :- proper_factor_sum(N, S), S=N.
+
+% abundant_count(C)
+% deficient_count(C)
+% perfect_count(C)
+% Each of these tells you how many numbers are abundant, deficient, and perfect.
+% Of course, this count will depend on the range of numbers. If you look only
+% at the numbers 1-20, you should find that there are 3 abundant numbers,
+% 16 deficient numbers, and 1 perfect number.
+abundant_count(C)  :- C=#count{N: abundant(N)}.
+deficient_count(C)  :- C=#count{N: deficient(N)}.
+perfect_count(C)  :- C=#count{N: perfect(N)}.
